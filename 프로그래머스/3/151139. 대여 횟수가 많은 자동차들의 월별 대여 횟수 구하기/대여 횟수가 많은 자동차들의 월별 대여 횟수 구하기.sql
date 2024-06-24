@@ -1,0 +1,17 @@
+-- 코드를 입력하세요
+SELECT 
+    MONTH(START_DATE) AS MONTH, 
+    CAR_ID, 
+    COUNT(history_id) AS RECORDS
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+where start_date>="2022-08-01" and 
+start_date<"2022-11-01" and 
+car_id IN (
+    SELECT car_id 
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
+    WHERE start_date>="2022-08-01" AND start_date<"2022-11-01" 
+    GROUP BY car_id 
+    HAVING COUNT(history_id) > 4) 
+GROUP BY MONTH(START_DATE), CAR_ID
+HAVING RECORDS > 0
+ORDER BY MONTH(START_DATE), CAR_ID DESC
